@@ -7,7 +7,7 @@ import pickle
 def getImagePath():
     user_root = os.path.expanduser('~')
 
-    image_path = 'iaa/ViewEvaluationNet/datasets/created_dataset'
+    image_path = 'iaa/ViewEvaluationNet_python3/datasets/created_dataset'
     return os.path.join(user_root, image_path)
 
 # updated function iterates a directory instead of reading a text file
@@ -21,6 +21,6 @@ def get_test_list(directory) -> list[str]:
 
 def get_pdefined_anchors():
     user_root = os.path.expanduser('~')
-    pdefined_anchor_file = 'Dev/adobe_pytorch/datasets/pdefined_anchor.pkl'
-    pdefined_anchors = pickle.load(open(os.path.join(user_root, pdefined_anchor_file), 'r'))
+    pdefined_anchor_file = 'iaa/ViewEvaluationNet_python3/datasets/pdefined_anchor.pkl'
+    pdefined_anchors = pickle.load(open(os.path.join(user_root, pdefined_anchor_file), 'rb'), encoding='latin1')
     return pdefined_anchors

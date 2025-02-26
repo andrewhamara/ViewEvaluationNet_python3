@@ -40,13 +40,13 @@ if __name__ == '__main__':
     ckpt_file = args.resume
     if ckpt_file is not None:
         if not os.path.isfile(ckpt_file):
-            print("CKPT {:s} NOT EXIST".format(ckpt_file))
+            print(("CKPT {:s} NOT EXIST".format(ckpt_file)))
             sys.exit(-1)
-        print("load from {:s}".format(ckpt_file))
+        print(("load from {:s}".format(ckpt_file)))
 
         single_pass_net = CompositionNet(pretrained=False, LinearSize1=args.l1, LinearSize2=args.l2)
         siamese_net = SiameseNet(single_pass_net)
-        ckpt = torch.load(ckpt_file, map_location=lambda storage, loc: storage)
+        ckpt = torch.load(ckpt_file, map_location=lambda storage, loc: storage, weights_only=False)
         model_state_dict = ckpt['state_dict']
         siamese_net.load_state_dict(model_state_dict)
     else:
@@ -63,26 +63,26 @@ if __name__ == '__main__':
     pdefined_anchors = get_pdefined_anchors()
     t_transform = data_transforms.get_val_transform(224)
 
-    image_list = get_test_list()
+    image_list = get_test_list('datasets/created_dataset')
     image_list = image_list[0:5]
 
 
     n_images = len(image_list)
 
 
-    print("Number of Images:\t{:d}".format(len(image_list)))
+    print(("Number of Images:\t{:d}".format(len(image_list))))
 
     image_annotation ={}
     topN = 5
 
     for image_idx, s_image_path in enumerate(image_list):
         image_crops, image_bboxes = dataset_loader.Get895Crops(s_image_path, pdefined_anchors)
-        print("[{:d} | {:d}]\t{:s}".format(image_idx, n_images, os.path.basename(s_image_path)))
-        pbar =progressbar.ProgressBar(max_value=len(image_crops))
+        print(("[{:d} | {:d}]\t{:s}".format(image_idx, n_images, os.path.basename(s_image_path))))
+        #pbar =progressbar.ProgressBar(max_value=len(image_crops))
         s_image_scores = []
         s_image_bboxes = []
         for crop_idx, (s_image_crop, s_image_bbox) in enumerate(zip(image_crops, image_bboxes)):
-            pbar.update(crop_idx)
+            #pbar.update(crop_idx)
             t_image_crop = t_transform(s_image_crop)
 
 
@@ -106,5 +106,5 @@ if __name__ == '__main__':
         image_annotation[s_image_name]['scores'] = s_scores_nms[0:pick_n]
         image_annotation[s_image_name]['bboxes'] = s_bboxes_nms[0:pick_n]
 
-    print("Done Computing, saving to {:s}".format(save_file))
+    print(("Done Computing, saving to {:s}".format(save_file)))
     load_utils.save_json(image_annotation, save_file)
