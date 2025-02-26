@@ -7,21 +7,16 @@ import pickle
 def getImagePath():
     user_root = os.path.expanduser('~')
 
-    image_path = 'datasets/created_dataset/SOS_Merged'
+    image_path = 'iaa/ViewEvaluationNet/datasets/created_dataset'
     return os.path.join(user_root, image_path)
 
-def get_test_list():
-    user_root = os.path.expanduser('~')
-    image_list_path = 'datasets/created_dataset/split/test.txt'
-    image_path = 'datasets/created_dataset/SOS_Merged'
+# updated function iterates a directory instead of reading a text file
+# and returns a list of paths
+def get_test_list(directory) -> list[str]:
+    valid_extensions = ('.jpg', '.jpeg', '.png')
+    image_list = [os.path.join(directory, f) for f in os.listdir(directory) if f.lower().endswith(valid_extensions)]
 
-    image_list = load_utils.load_string_list(os.path.join(user_root, image_list_path))
-    image_path_list = []
-    for s_image_name in image_list:
-        s_full_image_path = os.path.join(user_root,image_path,s_image_name)
-        if os.path.isfile(s_full_image_path):
-            image_path_list.append(s_full_image_path)
-    return image_path_list
+    return sorted(image_list)
 
 
 def get_pdefined_anchors():

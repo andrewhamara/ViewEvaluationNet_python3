@@ -20,7 +20,8 @@ parser.add_argument('--l1', default=1024, type=int)
 parser.add_argument('--l2', default=512, type=int)
 parser.add_argument("--gpu_id", default='1', type=str)
 parser.add_argument('--multiGpu', '-m', action='store_true', help='positivity constraint')
-parser.add_argument('--resume', '-r', default='snapshots/MTweak3-FullVGG-1024x512/params/best-5000-0.55-0.77.pth.tar', type=str, help='resume from checkpoint')
+#parser.add_argument('--resume', '-r', default='snapshots/MTweak3-FullVGG-1024x512/params/best-5000-0.55-0.77.pth.tar', type=str, help='resume from checkpoint')
+parser.add_argument('--resume', '-r', default='model_params/EvaluationNet.pth.tar', type=str, help='resume from checkpoint')
 
 if __name__ == '__main__':
 
@@ -107,13 +108,3 @@ if __name__ == '__main__':
 
     print("Done Computing, saving to {:s}".format(save_file))
     load_utils.save_json(image_annotation, save_file)
-
-
-
-
-
-
-
-
-
-
