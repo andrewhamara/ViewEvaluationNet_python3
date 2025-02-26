@@ -32,7 +32,7 @@ def viewBBoxes(image_file, bboxes, titles, showImageName=True):
         # Add the patch to the Axes
         ax.add_patch(rect_i)
     plt.show(block=False)
-    raw_input("Press Enter to continue...")
+    input("Press Enter to continue...")
     plt.close()
 
 
@@ -40,11 +40,11 @@ annotation_path = '/home/zwei/Dev/adobe_pytorch_share0/snapshots/MTweak3-FullVGG
 image_path_root = getImagePath()
 
 image_data = load_utils.load_json(annotation_path)
-for image_name in image_data.keys():
+for image_name in list(image_data.keys()):
     s_image_path = os.path.join(image_path_root, image_name)
     bboxes = image_data[image_name]['bboxes']
     scores = image_data[image_name]['scores']
     viewBBoxes(s_image_path, bboxes, scores)
 
-print "DEBUG"
+print("DEBUG")
 

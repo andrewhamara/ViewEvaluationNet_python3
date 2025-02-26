@@ -39,9 +39,9 @@ if __name__ == '__main__':
     ckpt_file = args.resume
     if ckpt_file is not None:
         if not os.path.isfile(ckpt_file):
-            print "CKPT {:s} NOT EXIST".format(ckpt_file)
+            print("CKPT {:s} NOT EXIST".format(ckpt_file))
             sys.exit(-1)
-        print "load from {:s}".format(ckpt_file)
+        print("load from {:s}".format(ckpt_file))
 
         single_pass_net = CompositionNet(pretrained=False, LinearSize1=args.l1, LinearSize2=args.l2)
         siamese_net = SiameseNet(single_pass_net)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         siamese_net = SiameseNet(single_pass_net)
 
 
-    print("Number of Params in {:s}\t{:d}".format(identifier, sum([p.data.nelement() for p in single_pass_net.parameters()])))
+    print(("Number of Params in {:s}\t{:d}".format(identifier, sum([p.data.nelement() for p in single_pass_net.parameters()]))))
 
     useCuda = cuda_model.ifUseCuda(args.gpu_id, args.multiGpu)
     single_pass_net = cuda_model.convertModel2Cuda(single_pass_net, args.gpu_id, args.multiGpu)
@@ -69,14 +69,14 @@ if __name__ == '__main__':
     n_images = len(image_list)
 
 
-    print "Number of Images:\t{:d}".format(len(image_list))
+    print("Number of Images:\t{:d}".format(len(image_list)))
 
     image_annotation ={}
     topN = 5
 
     for image_idx, s_image_path in enumerate(image_list):
         image_crops, image_bboxes = dataset_loader.Get895Crops(s_image_path, pdefined_anchors)
-        print "[{:d} | {:d}]\t{:s}".format(image_idx, n_images, os.path.basename(s_image_path))
+        print("[{:d} | {:d}]\t{:s}".format(image_idx, n_images, os.path.basename(s_image_path)))
         pbar =progressbar.ProgressBar(max_value=len(image_crops))
         s_image_scores = []
         s_image_bboxes = []
@@ -105,7 +105,7 @@ if __name__ == '__main__':
         image_annotation[s_image_name]['scores'] = s_scores_nms[0:pick_n]
         image_annotation[s_image_name]['bboxes'] = s_bboxes_nms[0:pick_n]
 
-    print "Done Computing, saving to {:s}".format(save_file)
+    print("Done Computing, saving to {:s}".format(save_file))
     load_utils.save_json(image_annotation, save_file)
 
 
